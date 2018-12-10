@@ -1,7 +1,7 @@
 {
-  "name": "Assignment4",
+  "name": "Assignment5",
   "version": "1.0.0",
-  "description": "Routing server-side requests using ExpressJS",
+  "description": "assignment for db",
   "main": "server.js",
   "author": "Medhir Bhargava",
   "license": "MIT",
