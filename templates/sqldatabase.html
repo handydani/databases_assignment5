@@ -34,8 +34,7 @@
             <input type ="hidden" name = "old_genus" value='{{eresult["genus"]}}' />
             <input type ="hidden" name = "old_species" value='{{eresult["species"]}}' />
             <input type ="hidden" name = "old_comname" value='{{eresult["comname"]}}' />
-
-
+            
 
             
             {% endfor %}
@@ -43,6 +42,7 @@
          <br>
 
          <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+        </form>
         {% else %}
             <div style='margin-left: 100px; width: 45%;'>
             <div class="alert alert-info" role="alert">
@@ -69,9 +69,18 @@
 
         <div class="alert alert-success" role="alert" style='width: 90%; margin-left: 100px;'>
         <strong>Check it out!</strong> Here is your data table below ...
-        </div>
 
-        <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+        </div>
+            <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#home">FLOWERS </a></li>
+          <li><a data-toggle="tab" href="#menu1">SIGHTINGS </a></li>
+        </ul>
+
+         <div class="tab-content">
+          <div id="home" class="tab-pane fade in active">
+            <h3>HOME</h3>
+            <p>Some content.
+                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
                  <thead>
                     <tr>
                         <th>Genus</th>
@@ -110,6 +119,36 @@
                  {% endfor %}
 
         </table>
+            </p>
+          </div>
+          <div id="menu1" class="tab-pane fade">
+            <h3>Menu 1</h3>
+            <p>Some content in menu 1.
+                 <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+                 <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Person</th>
+                    <th>Location</th>
+                    <th>Sighted</th>
+                    </tr>
+                 </thead>
+                  {% for result in sightings_table %}
+                    <tr>
+                       <td>{{result["name"]}}</td>
+                        <td>{{result["person"]}}</td>
+                        <td>{{result["location"]}}</td>
+                        <td>{{result["sighted"]}}</td>
+                     </tr>
+                 {% endfor %}
+                </table>
+            </p>
+          </div>
+
+
+
+
+        
 
 
                                 
