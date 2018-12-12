@@ -1,0 +1,175 @@
+    <head>
+         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    </head>
+   <body>
+       
+        <div class ='row'>
+            <div style='margin-left:100px;'>
+            <img src = 'http://www.itsimplified-ms.com/posts/photos/databases.png'>
+            </div>
+            <div style='padding-top: 20px; padding-left:20px;'><h3>
+             Assignment 5: Databases
+            </h3></div>
+        </div> <!--ends intro -->
+
+        <br>
+       <div class ='row'>
+
+        {% block content %}
+        {% if 'query_edit' in request.url %}
+            <div style='margin-left: 100px; width: 45%;'>
+            <div class="alert alert-info" role="alert">
+             <strong>Notice something wrong?</strong> Edit the flower information here ...
+            </div>
+
+            {% for eresult in eresults %}
+
+            <form action = "edit" method = "POST">
+             <p>Genus: <input class="form-control" type = "text" name = "genus" style='width: 100%;' value='{{eresult["genus"]}}'/></p>
+             <p>Species: <input class="form-control" type = "text" name = "species" style='width: 100%;' value='{{eresult["species"]}}'/></p>
+             <p>Common Name: <input class="form-control" type = "text" name = "comname" style='width: 100%;' value='{{eresult["comname"]}}'/></p>
+            <input type ="hidden" name = "old_genus" value='{{eresult["genus"]}}' />
+            <input type ="hidden" name = "old_species" value='{{eresult["species"]}}' />
+            <input type ="hidden" name = "old_comname" value='{{eresult["comname"]}}' />
+
+
+
+            
+            {% endfor %}
+
+         <br>
+
+         <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+        {% else %}
+            <div style='margin-left: 100px; width: 45%;'>
+            <div class="alert alert-info" role="alert">
+             <strong>Have you sighted a flower?</strong> Enter here ...
+            </div>
+
+            <form action = "insert" method = "POST">
+             <p>Flower Name: <input class="form-control" type = "text" name = "name" style='width: 100%;'/></p>
+             <p>Your Name: <input class="form-control" type = "text" name = "person" style='width: 100%;'/></p>
+             <p>Location: <input class="form-control" type = "text" name = "location" style='width: 100%;'/></p>
+             <p>Sighted On: <input class="form-control" type = "text" name = "sighted" style='width: 100%;'/></p>
+             
+
+
+             <br>
+
+             <p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+            </div>
+        {% endif %}
+        {% endblock content %}
+
+        <div style='margin-left: 20px; width: 45%;'>
+        <div class="alert alert-warning" role="alert">
+         <strong>Awesome!</strong> Here is your mySQL code ...
+        </div>
+        {{msg}}
+        </div>
+
+        </div> <!-- ends row div -->
+
+      <br><br>
+
+        <div class="alert alert-success" role="alert" style='width: 90%; margin-left: 100px;'>
+        <strong>Check it out!</strong> Here is your data table below ...
+        </div>
+
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#home">FLOWERS </a></li>
+          <li><a data-toggle="tab" href="#menu1">SIGHTINGS </a></li>
+          <li><a data-toggle="tab" href="#menu2">FEATURES </a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div id="home" class="tab-pane fade in active">
+            <h3>HOME</h3>
+            <p>Some content.
+                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+                 <thead>
+                    <tr>
+                    <th>Genus</th>
+                    <th>Species</th>
+                    <th>Comname</th>
+                    <th>Edit</th>
+                    </tr>
+                 </thead>
+
+                 {% for result in flowers_table %}
+                    <tr>
+                       <td>{{result["genus"]}}</td>
+                        <td>{{result["species"]}}</td>
+                        <td>{{result["comname"]}}</td>
+                        <td align="center"><a href = "{{ url_for('sql_editlink', egenus=result['genus'], especies=result['species'], ecomname=result['comname'])}}"><i class="fas fa-edit"></a></td>
+
+                    </tr>
+                 {% endfor %}
+                </table>
+            </p>
+          </div>
+          <div id="menu1" class="tab-pane fade">
+            <h3>Menu 1</h3>
+            <p>Some content in menu 1.
+
+                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+                 <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Person</th>
+                    <th>Location</th>
+                    <th>Sighted</th>
+                    </tr>
+                 </thead>
+
+                 {% for result in sightings_table %}
+                    <tr>
+                       <td>{{result["name"]}}</td>
+                        <td>{{result["person"]}}</td>
+                        <td>{{result["location"]}}</td>
+                        <td>{{result["sighted"]}}</td>
+
+                    </tr>
+                 {% endfor %}
+                </table>
+            </p>
+          </div>
+          <div id="menu2" class="tab-pane fade">
+            <h3>Menu 2</h3>
+            <p>Some content in menu 2.
+
+                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+                 <thead>
+                    <tr>
+                    <th>Location</th>
+                    <th>Class</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Map</th>
+                    <th>Elev</th>
+                    </tr>
+                 </thead>
+
+                 {% for result in features_table %}
+                    <tr>
+                       <td>{{result["location"]}}</td>
+                        <td>{{result["class"]}}</td>
+                        <td>{{result["latitude"]}}</td>
+                        <td>{{result["longitude"]}}</td>
+                        <td>{{result["map"]}}</td>
+                        <td>{{result["elev"]}}</td>
+                    </tr>
+                 {% endfor %}
+                </table>
+
+            </p>
+          </div>
+        </div>
+
+        
+     
+    </body>
