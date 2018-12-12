@@ -47,9 +47,9 @@ def sql_query2(query,var):
     rows = cur.fetchall()
     return rows
 
-def sql_query3(query,num):
+def sql_query3(query,var,num):
     cur = conn.cursor()
-    cur.execute(query)
+    cur.execute(query,var)
     rows = cur.fetchmany(num)
     return rows
 
@@ -59,8 +59,3 @@ def sql_query_for_sightings(query,var):
     rows = cur.fetchmany(10)
     return rows
 
-
-name = "Draperia"
-rows = sql_query_for_sightings('''SELECT * FROM SIGHTINGS WHERE NAME = ? ORDER BY SIGHTED DESC''', (name,))
-for each in rows:
-    print(each['name'], each['person'], each['location'], each['sighted'])
