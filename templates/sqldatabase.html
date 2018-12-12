@@ -9,7 +9,6 @@
        
         <div class ='row'>
             <div style='margin-left:100px;'>
-            <img src = 'http://www.itsimplified-ms.com/posts/photos/databases.png'>
             </div>
             <div style='padding-top: 20px; padding-left:20px;'><h3>
              Assignment 5: Databases
@@ -65,14 +64,6 @@
         {% endif %}
         {% endblock content %}
 
-        <div style='margin-left: 20px; width: 45%;'>
-        <div class="alert alert-warning" role="alert">
-         <strong>Awesome!</strong> Here is your mySQL code ...
-        </div>
-        {{msg}}
-        </div>
-
-        </div> <!-- ends row div -->
 
       <br><br>
 
@@ -80,23 +71,13 @@
         <strong>Check it out!</strong> Here is your data table below ...
         </div>
 
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#home">FLOWERS </a></li>
-          <li><a data-toggle="tab" href="#menu1">SIGHTINGS </a></li>
-          <li><a data-toggle="tab" href="#menu2">FEATURES </a></li>
-        </ul>
-
-        <div class="tab-content">
-          <div id="home" class="tab-pane fade in active">
-            <h3>HOME</h3>
-            <p>Some content.
-                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
+        <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
                  <thead>
                     <tr>
-                    <th>Genus</th>
-                    <th>Species</th>
-                    <th>Comname</th>
-                    <th>Edit</th>
+                        <th>Genus</th>
+                        <th>Species</th>
+                        <th>Comname</th>
+                        <th>Edit</th>
                     </tr>
                  </thead>
 
@@ -106,69 +87,47 @@
                         <td>{{result["species"]}}</td>
                         <td>{{result["comname"]}}</td>
                         <td align="center"><a href = "{{ url_for('sql_editlink', egenus=result['genus'], especies=result['species'], ecomname=result['comname'])}}"><i class="fas fa-edit"></a></td>
+                        <!-- <td align="center">
+                            <a data-toggle="collapse" data-target='#{{result["genus"]}}'>
+                            <i class="fas fa-eye">
+                            </a>
+                        </td> -->
 
+                    </tr>
+                    <tr>
+                        <div id='{{result["genus"]}}' class="collapse">
+                        {% for sighting in sightings_results %}
+
+                                <tr>
+                                    <td>{{sighting["person"]}}</td>
+                                    <td>{{sighting["location"]}}</td>
+                                    <td>{{sighting["sighted"]}}</td>
+                                    <td></td>
+                                </tr>
+                        {% endfor %}
+                        </div>
                     </tr>
                  {% endfor %}
-                </table>
+
+        </table>
+
+
+                                
+        <!-- <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#home">FLOWERS </a></li>
+          <li><a data-toggle="tab" href="#menu1">SIGHTINGS </a></li>
+          <li><a data-toggle="tab" href="#menu2">FEATURES </a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div id="home" class="tab-pane fade in active">
+            <h3>HOME</h3>
+            <p>Some content.
+                
             </p>
           </div>
-          <div id="menu1" class="tab-pane fade">
-            <h3>Menu 1</h3>
-            <p>Some content in menu 1.
-
-                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
-                 <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Person</th>
-                    <th>Location</th>
-                    <th>Sighted</th>
-                    </tr>
-                 </thead>
-
-                 {% for result in sightings_table %}
-                    <tr>
-                       <td>{{result["name"]}}</td>
-                        <td>{{result["person"]}}</td>
-                        <td>{{result["location"]}}</td>
-                        <td>{{result["sighted"]}}</td>
-
-                    </tr>
-                 {% endfor %}
-                </table>
-            </p>
-          </div>
-          <div id="menu2" class="tab-pane fade">
-            <h3>Menu 2</h3>
-            <p>Some content in menu 2.
-
-                <table class = 'table table-hover' style = 'margin-left: 100px; margin-right: 100px; width: 90%;'>
-                 <thead>
-                    <tr>
-                    <th>Location</th>
-                    <th>Class</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Map</th>
-                    <th>Elev</th>
-                    </tr>
-                 </thead>
-
-                 {% for result in features_table %}
-                    <tr>
-                       <td>{{result["location"]}}</td>
-                        <td>{{result["class"]}}</td>
-                        <td>{{result["latitude"]}}</td>
-                        <td>{{result["longitude"]}}</td>
-                        <td>{{result["map"]}}</td>
-                        <td>{{result["elev"]}}</td>
-                    </tr>
-                 {% endfor %}
-                </table>
-
-            </p>
-          </div>
-        </div>
+          
+        </div> -->
 
         
      

@@ -5,18 +5,16 @@ import sys
 
 app = Flask(__name__)
 
-# TODO: MAIN FLOWER LISTINGS, ON CLICK NEEDS TO SEE FIRST 10 OF SIGHTINGS
+# TODO: MAIN FLOWER LISTINGS, NEEDS TO SEE FIRST 10 OF SIGHTINGS
 @app.route('/')
 def sql_database():
-    from functions.sqlquery import sql_query
+    from functions.sqlquery import sql_query, sql_query3
     flowers_table = sql_query('''SELECT * FROM Flowers''')
-    sightings_table = sql_query('''SELECT * FROM Sightings''')
-    features_table = sql_query('''SELECT * FROM Features''')
-    # msg = 'SELECT * FROM Flowers'
+    sightings_results = sql_query3('''SELECT * FROM SIGHTINGS WHERE NAME='Draperia' ORDER BY SIGHTED DESC''', 10)
+
     return render_template('sqldatabase.html', 
-    	flowers_table=flowers_table, 
-    	sightings_table=sightings_table, 
-    	features_table=features_table)
+    	sightings_results=sightings_results,
+    	flowers_table=flowers_table)
 
 # TODO: INSERT ON SIGHTINGS TABLE 
 @app.route('/insert',methods = ['POST', 'GET']) #this is when user submits an insert
@@ -27,14 +25,11 @@ def sql_datainsert():
         person = request.form['person']
         location = request.form['location']
         sighted = request.form['sighted']
+        # TODO: SET THIS EQUAL TO SOMETHING MAYBE IT'LL WORK
         sql_edit_insert(''' INSERT OR REPLACE INTO Sightings (name,person,location,sighted) VALUES (?,?,?,?) ''', (name,person,location,sighted) )
     flowers_table = sql_query('''SELECT * FROM Flowers''')
-    sightings_table = sql_query('''SELECT * FROM Sightings''')
-    features_table = sql_query('''SELECT * FROM Features''')
     return render_template('sqldatabase.html', 
-    	flowers_table=flowers_table, 
-    	sightings_table=sightings_table, 
-    	features_table=features_table) 
+    	flowers_table=flowers_table) 
 
 @app.route('/query_edit',methods = ['POST', 'GET']) #this is when user clicks edit link
 def sql_editlink():
@@ -45,13 +40,9 @@ def sql_editlink():
         ecomname = request.args.get('comname')
         eresults = sql_query2(''' SELECT * FROM Flowers WHERE genus = ? AND species = ? ''',(egenus,ecomname))
     flowers_table = sql_query('''SELECT * FROM Flowers''')
-    sightings_table = sql_query('''SELECT * FROM Sightings''')
-    features_table = sql_query('''SELECT * FROM Features''')
     return render_template('sqldatabase.html', 
     	eresults=eresults,
-    	flowers_table=flowers_table, 
-    	sightings_table=sightings_table, 
-    	features_table=features_table)
+    	flowers_table=flowers_table)
 
 @app.route('/edit',methods = ['POST', 'GET']) #this is when user submits an edit
 def sql_dataedit():
@@ -65,12 +56,19 @@ def sql_dataedit():
     	comname = request.form['comname']
     	sql_edit_insert(''' UPDATE Flowers set genus=?,species=?,comname=? WHERE genus=? and species=? and comname=?''', (genus,species,comname,old_genus,old_species, old_comname) )
     flowers_table = sql_query('''SELECT * FROM Flowers''')
-    sightings_table = sql_query('''SELECT * FROM Sightings''')
-    features_table = sql_query('''SELECT * FROM Features''')
     return render_template('sqldatabase.html', 
-    	flowers_table=flowers_table, 
-    	sightings_table=sightings_table, 
-    	features_table=features_table)
+    	flowers_table=flowers_table)
+
+# @app.route('/sightings', methods = ['POST', 'GET'])
+# def sql_sightingslist():
+# 	from functions.sql_query import sql_query3, sql_query
+# 	if request.method == 'GET':
+# 		comname = request.args.get('comname')
+# 		sightings_results = sql_query3('''SELECT * FROM SIGHTINGS WHERE NAME=? ORDER BY SIGHTED DESC''', (comname), 10)
+# 	flowers_table = sql_query('''SELECT * FROM Flowers''')
+# 	return render_template('sql_database.html',
+# 		sightings_results=sightings_result,
+# 		flowers_table=flowers_table)
 
 if __name__ == "__main__":
     app.run(debug=True)
