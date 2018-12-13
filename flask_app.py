@@ -5,7 +5,6 @@ import sys
 
 app = Flask(__name__)
 
-# TODO: MAIN FLOWER LISTINGS, NEEDS TO SEE FIRST 10 OF SIGHTINGS
 @app.route('/')
 def sql_database():
     from functions.sqlquery import sql_query, sql_query3
@@ -18,7 +17,6 @@ def sql_database():
     	sightings_table=sightings_table,
     	flowers_table=flowers_table)
 
-# TODO: REFINE QUERY TO BE MORE ROBUST
 @app.route('/insert',methods = ['POST', 'GET']) #this is when user submits an insert
 def sql_datainsert():
     from functions.sqlquery import sql_edit_insert, sql_query
@@ -71,9 +69,11 @@ def sql_dataedit():
 
     	sql_edit_insert(''' UPDATE Flowers set genus=?,species=?,comname=? WHERE genus=? and species=? and comname=?''', (genus,species,comname,old_genus,old_species, old_comname) )
     flowers_table = sql_query('''SELECT * FROM Flowers''')
-    sightings_results = sql_query3('''SELECT * FROM SIGHTINGS WHERE NAME='Draperia' ORDER BY SIGHTED DESC''', 10)
+    sightings_results = sql_query3('''SELECT * FROM SIGHTINGS WHERE NAME=? ORDER BY SIGHTED DESC''',(comname,), 10)
+    sightings_table = sql_query('''SELECT * FROM Sightings''')
     return render_template('sqldatabase.html', 
     	sightings_results=sightings_results,
+    	sightings_table=sightings_table,
     	flowers_table=flowers_table)
 
 if __name__ == "__main__":

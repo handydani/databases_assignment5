@@ -115,7 +115,7 @@
                         <th>Genus</th>
                         <th>Species</th>
                         <th>Comname</th>
-                        <th>Edit</th>
+                        <th>Select</th>
                     </tr>
                  </thead>
 
@@ -125,7 +125,7 @@
                         <td>{{result["species"]}}</td>
                         <td>{{result["comname"]}}</td>
                         <td align="center">
-                            <a href = "{{ url_for('sql_editlink', egenus=result['genus'], especies=result['species'], ecomname=result['comname'])}}"><i class="fas fa-edit"></a>
+                            <a href = "{{ url_for('sql_editlink', egenus=result['genus'], especies=result['species'], ecomname=result['comname'])}}"><i class="fas fa-mouse-pointer"></a>
                         </td>
 
                     </tr>
